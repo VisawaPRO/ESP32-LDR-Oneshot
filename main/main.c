@@ -42,6 +42,7 @@ void app_main(void)
     ESP_ERROR_CHECK(adc_cali_create_scheme_line_fitting(&cali_config, &cali_handle));
 
     // 4. main loop
+    double lux;
     while (1) 
     {
         ESP_ERROR_CHECK(adc_oneshot_read(handle, ADC_CHANNEL_0, &adc_read0));
@@ -49,6 +50,8 @@ void app_main(void)
         printf("\n\n");
         adc_cali_raw_to_voltage(cali_handle, adc_read0, &mv_output);
         printf("ADC milivolt output %d \n", mv_output);
+        lux = 0.2699*adc_read0-419.58;
+        printf("Lux value = %f\n",lux);
 
         vTaskDelay(500 / portTICK_PERIOD_MS);
     } // end of while loop
